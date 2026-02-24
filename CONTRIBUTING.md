@@ -2,7 +2,7 @@
 
 ## Workflow de branches
 
-- Base de travail : `develop`
+- **Base de travail** : `develop`
 - Une user story = une branche `feature/<id>-<nom>`
 - Pas de commit direct sur `main`
 
