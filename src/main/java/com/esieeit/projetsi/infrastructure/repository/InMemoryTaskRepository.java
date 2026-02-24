@@ -7,9 +7,12 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.stereotype.Repository;
+
 import com.esieeit.projetsi.application.port.TaskRepository;
 import com.esieeit.projetsi.domain.model.Task;
 
+@Repository
 public class InMemoryTaskRepository implements TaskRepository {
 
     private final Map<Long, Task> store = new ConcurrentHashMap<>();
