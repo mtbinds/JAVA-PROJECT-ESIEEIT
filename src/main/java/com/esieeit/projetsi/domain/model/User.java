@@ -1,14 +1,13 @@
 package com.esieeit.projetsi.domain.model;
 
+import com.esieeit.projetsi.domain.enums.UserRole;
+import com.esieeit.projetsi.domain.exception.ValidationException;
+import com.esieeit.projetsi.domain.validation.Validators;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import com.esieeit.projetsi.domain.enums.UserRole;
-import com.esieeit.projetsi.domain.exception.ValidationException;
-import com.esieeit.projetsi.domain.validation.Validators;
 
 /**
  * Domain entity representing an authenticated user.

@@ -1,13 +1,12 @@
 package com.esieeit.projetsi.domain.model;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Objects;
-
 import com.esieeit.projetsi.domain.enums.TaskPriority;
 import com.esieeit.projetsi.domain.enums.TaskStatus;
 import com.esieeit.projetsi.domain.exception.BusinessRuleException;
 import com.esieeit.projetsi.domain.validation.Validators;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Domain entity representing a task inside a project.
@@ -63,7 +62,8 @@ public class Task {
             return;
         }
         String normalized = description.trim();
-        this.description = normalized.isEmpty() ? null : Validators.requireSize(normalized, "task.description", 1, 1000);
+        this.description = normalized.isEmpty() ? null
+                : Validators.requireSize(normalized, "task.description", 1, 1000);
         touch();
     }
 

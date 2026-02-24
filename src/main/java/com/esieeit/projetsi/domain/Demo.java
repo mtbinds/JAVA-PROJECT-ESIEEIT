@@ -1,11 +1,10 @@
 package com.esieeit.projetsi.domain;
 
-import java.util.Set;
-
 import com.esieeit.projetsi.domain.enums.UserRole;
 import com.esieeit.projetsi.domain.model.Project;
 import com.esieeit.projetsi.domain.model.Task;
 import com.esieeit.projetsi.domain.model.User;
+import java.util.Set;
 
 /**
  * Minimal CLI demo for the domain model lifecycle.

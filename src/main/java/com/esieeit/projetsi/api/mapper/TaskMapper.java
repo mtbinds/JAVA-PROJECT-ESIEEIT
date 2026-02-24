@@ -13,7 +13,6 @@ public final class TaskMapper {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
-                task.getStatus().name()
-        );
+                task.getStatus().name());
     }
 }

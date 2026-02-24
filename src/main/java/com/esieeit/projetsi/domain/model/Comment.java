@@ -1,9 +1,8 @@
 package com.esieeit.projetsi.domain.model;
 
+import com.esieeit.projetsi.domain.validation.Validators;
 import java.time.Instant;
 import java.util.Objects;
-
-import com.esieeit.projetsi.domain.validation.Validators;
 
 /**
  * Domain entity representing a comment posted on a task.

@@ -1,13 +1,12 @@
 package com.esieeit.projetsi.domain.model;
 
+import com.esieeit.projetsi.domain.exception.BusinessRuleException;
+import com.esieeit.projetsi.domain.validation.Validators;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import com.esieeit.projetsi.domain.exception.BusinessRuleException;
-import com.esieeit.projetsi.domain.validation.Validators;
 
 /**
  * Domain entity representing a project owned by a user.

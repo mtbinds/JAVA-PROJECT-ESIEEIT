@@ -1,8 +1,7 @@
 package com.esieeit.projetsi.domain.validation;
 
-import java.util.regex.Pattern;
-
 import com.esieeit.projetsi.domain.exception.ValidationException;
+import java.util.regex.Pattern;
 
 /**
  * Utility class containing reusable domain validation helpers.
