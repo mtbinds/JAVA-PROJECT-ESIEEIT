@@ -1,9 +1,20 @@
 package com.esieeit.projetsi.api.dto;
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class TaskUpdateRequest {
 
+    @Size(min = 3, max = 120, message = "title doit contenir entre 3 et 120 caractères")
     private String title;
+
+    @Size(max = 2000, message = "description ne doit pas dépasser 2000 caractères")
     private String description;
+
+    @Pattern(
+            regexp = "TODO|IN_PROGRESS|DONE|ARCHIVED",
+            message = "status doit être parmi TODO, IN_PROGRESS, DONE, ARCHIVED"
+    )
     private String status;
 
     public String getTitle() {

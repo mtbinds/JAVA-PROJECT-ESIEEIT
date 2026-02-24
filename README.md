@@ -81,6 +81,7 @@ Voir `BACKLOG.md`.
 - Décisions d’architecture : `docs/DECISIONS.md`
 - Règles métier et validations (TP 2.2) : `docs/DOMAIN_RULES.md`
 - API REST Task CRUD (TP 3.1) : `docs/API_TASKS.md`
+- Validation et gestion d’erreurs (TP 3.2) : `docs/API_ERRORS.md`
 
 ## API Tasks (TP 3.1)
 
@@ -99,6 +100,13 @@ curl -i -X POST http://localhost:8080/api/tasks \
    -H "Content-Type: application/json" \
    -d '{"title":"Initialiser le repo","description":"Créer Gradle + README"}'
 ```
+
+## Validation & erreurs (TP 3.2)
+
+- validation technique des DTOs avec Bean Validation (`@NotBlank`, `@Size`, `@Pattern`)
+- activation de validation via `@Valid` sur `POST`/`PUT`
+- gestion globale des erreurs via `@RestControllerAdvice`
+- format de réponse d’erreur JSON uniforme (`timestamp`, `status`, `error`, `message`, `path`, `details`)
 
 ## Structure actuelle
 
