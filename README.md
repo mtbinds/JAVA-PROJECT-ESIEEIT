@@ -79,6 +79,7 @@ Voir `BACKLOG.md`.
 - Modèle métier : `docs/DOMAIN_MODEL.md`
 - Structure des packages : `docs/PACKAGE_STRUCTURE.md`
 - Décisions d’architecture : `docs/DECISIONS.md`
+- Règles métier et validations (TP 2.2) : `docs/DOMAIN_RULES.md`
 
 ## Structure actuelle
 
