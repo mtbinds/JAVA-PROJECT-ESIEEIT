@@ -47,10 +47,10 @@ cd <repo>
 ./gradlew test
 ```
 
-### Run
+### Run API Spring Boot
 
 ```bash
-./gradlew run
+./gradlew bootRun
 ```
 
 ## Workflow Git
@@ -80,6 +80,25 @@ Voir `BACKLOG.md`.
 - Structure des packages : `docs/PACKAGE_STRUCTURE.md`
 - Décisions d’architecture : `docs/DECISIONS.md`
 - Règles métier et validations (TP 2.2) : `docs/DOMAIN_RULES.md`
+- API REST Task CRUD (TP 3.1) : `docs/API_TASKS.md`
+
+## API Tasks (TP 3.1)
+
+Endpoints disponibles :
+
+- `GET /api/tasks`
+- `GET /api/tasks/{id}`
+- `POST /api/tasks`
+- `PUT /api/tasks/{id}`
+- `DELETE /api/tasks/{id}`
+
+Exemple rapide :
+
+```bash
+curl -i -X POST http://localhost:8080/api/tasks \
+   -H "Content-Type: application/json" \
+   -d '{"title":"Initialiser le repo","description":"Créer Gradle + README"}'
+```
 
 ## Structure actuelle
 
