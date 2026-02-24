@@ -74,6 +74,12 @@ Types courants : `feat`, `fix`, `chore`, `docs`, `refactor`, `test`.
 
 Voir `BACKLOG.md`.
 
+## Documentation de modélisation (TP 2.1)
+
+- Modèle métier : `docs/DOMAIN_MODEL.md`
+- Structure des packages : `docs/PACKAGE_STRUCTURE.md`
+- Décisions d’architecture : `docs/DECISIONS.md`
+
 ## Structure actuelle
 
 ```text
