@@ -11,10 +11,7 @@ public class TaskUpdateRequest {
     @Size(max = 2000, message = "description ne doit pas dépasser 2000 caractères")
     private String description;
 
-    @Pattern(
-            regexp = "TODO|IN_PROGRESS|DONE|ARCHIVED",
-            message = "status doit être parmi TODO, IN_PROGRESS, DONE, ARCHIVED"
-    )
+    @Pattern(regexp = "TODO|IN_PROGRESS|DONE|ARCHIVED", message = "status doit être parmi TODO, IN_PROGRESS, DONE, ARCHIVED")
     private String status;
 
     public String getTitle() {

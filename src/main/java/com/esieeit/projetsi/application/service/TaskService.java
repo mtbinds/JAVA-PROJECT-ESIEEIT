@@ -43,7 +43,7 @@ public class TaskService {
     public Task getById(Long id) {
         validateId(id);
         return taskRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Task not found: id=" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found: id=" + id));
     }
 
     public Task update(Long id, TaskUpdateRequest request) {

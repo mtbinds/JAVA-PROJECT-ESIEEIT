@@ -19,8 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(
             MethodArgumentNotValidException ex,
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request) {
         List<FieldErrorDetail> details = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new FieldErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))
                 .toList();
@@ -31,8 +30,7 @@ public class GlobalExceptionHandler {
                 "VALIDATION_ERROR",
                 "La requête est invalide",
                 request.getRequestURI(),
-                details
-        );
+                details);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
@@ -44,8 +42,7 @@ public class GlobalExceptionHandler {
                 "NOT_FOUND",
                 ex.getMessage(),
                 request.getRequestURI(),
-                List.of()
-        );
+                List.of());
     }
 
     @ExceptionHandler(InvalidDataException.class)
@@ -55,8 +52,7 @@ public class GlobalExceptionHandler {
                 "INVALID_DATA",
                 ex.getMessage(),
                 request.getRequestURI(),
-                List.of()
-        );
+                List.of());
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -66,8 +62,7 @@ public class GlobalExceptionHandler {
                 "INVALID_DATA",
                 ex.getMessage(),
                 request.getRequestURI(),
-                List.of()
-        );
+                List.of());
     }
 
     @ExceptionHandler(BusinessRuleException.class)
@@ -77,8 +72,7 @@ public class GlobalExceptionHandler {
                 "BUSINESS_RULE_VIOLATION",
                 ex.getMessage(),
                 request.getRequestURI(),
-                List.of()
-        );
+                List.of());
     }
 
     @ExceptionHandler(Exception.class)
@@ -88,8 +82,7 @@ public class GlobalExceptionHandler {
                 "INTERNAL_ERROR",
                 "Une erreur inattendue est survenue",
                 request.getRequestURI(),
-                List.of()
-        );
+                List.of());
     }
 
     private ResponseEntity<ErrorResponse> build(
@@ -97,16 +90,14 @@ public class GlobalExceptionHandler {
             String error,
             String message,
             String path,
-            List<FieldErrorDetail> details
-    ) {
+            List<FieldErrorDetail> details) {
         ErrorResponse body = new ErrorResponse(
                 Instant.now(),
                 status.value(),
                 error,
                 message,
                 path,
-                details
-        );
+                details);
         return ResponseEntity.status(status).body(body);
     }
 }

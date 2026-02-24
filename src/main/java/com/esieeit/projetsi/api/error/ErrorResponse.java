@@ -18,8 +18,7 @@ public class ErrorResponse {
             String error,
             String message,
             String path,
-            List<FieldErrorDetail> details
-    ) {
+            List<FieldErrorDetail> details) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
