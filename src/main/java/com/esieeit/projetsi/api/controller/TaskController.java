@@ -5,7 +5,7 @@ import com.esieeit.projetsi.api.dto.TaskResponse;
 import com.esieeit.projetsi.api.dto.TaskUpdateRequest;
 import com.esieeit.projetsi.api.mapper.TaskMapper;
 import com.esieeit.projetsi.application.service.TaskService;
-import com.esieeit.projetsi.domain.model.Task;
+import com.esieeit.projetsi.domain.entity.Task;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;

@@ -10,7 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
-@Repository
+// @Repository  -- disabled: replaced by TaskJpaRepository (Spring Data JPA)
+// Remove @Repository to prevent Spring from registering this bean as the
+// application.port.TaskRepository implementation. TaskService now uses
+// TaskJpaRepository directly.
 public class InMemoryTaskRepository implements TaskRepository {
 
     private final Map<Long, Task> store = new ConcurrentHashMap<>();
