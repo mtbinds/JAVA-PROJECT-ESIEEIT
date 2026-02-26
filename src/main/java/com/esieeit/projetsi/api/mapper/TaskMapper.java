@@ -1,7 +1,7 @@
 package com.esieeit.projetsi.api.mapper;
 
 import com.esieeit.projetsi.api.dto.TaskResponse;
-import com.esieeit.projetsi.domain.model.Task;
+import com.esieeit.projetsi.domain.entity.Task;
 
 public final class TaskMapper {
 
@@ -13,6 +13,9 @@ public final class TaskMapper {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
-                task.getStatus().name());
+                task.getStatus() != null ? task.getStatus().name() : null,
+                task.getPriority() != null ? task.getPriority().name() : null,
+                task.getProject() != null ? task.getProject().getId() : null,
+                task.getDueDate() != null ? task.getDueDate().toString() : null);
     }
 }

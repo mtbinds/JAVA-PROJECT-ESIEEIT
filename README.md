@@ -22,8 +22,11 @@ Projet SI en Java : construire une API backend propre, structurée, documentée 
 
 - Java 21
 - Gradle (wrapper)
+- Spring Boot 3
 - JUnit 5
-- (à venir) Spring Boot, DB, Docker
+- Spring Data JPA (Hibernate)
+- MySQL 8 (Docker Compose)
+- phpMyAdmin (Docker Compose)
 
 ## Installation
 
@@ -47,10 +50,57 @@ cd <repo>
 ./gradlew test
 ```
 
-### Run API Spring Boot
+### Run API Spring Boot (mode normal)
 
 ```bash
 ./gradlew bootRun
+```
+
+### Run API Spring Boot (mode dev – avec jeu de données)
+
+```bash
+./gradlew bootRun --args='--spring.profiles.active=dev'
+```
+
+Le profil `dev` active `DataInitializer` qui insère automatiquement 4 utilisateurs, 3 projets et 12 tâches si les tables sont vides.
+
+## Base de données (TP 4.1)
+
+### 1) Préparer les variables d'environnement
+
+```bash
+cp .env.example .env
+```
+
+### 2) Démarrer MySQL + phpMyAdmin
+
+```bash
+docker compose up -d
+```
+
+Services exposés par défaut :
+
+- MySQL : `localhost:3307`
+- phpMyAdmin : `http://localhost:8081`
+
+### 3) Lancer l'API
+
+```bash
+./gradlew bootRun
+```
+
+Au démarrage, Hibernate crée/met à jour automatiquement le schéma (`spring.jpa.hibernate.ddl-auto=update`).
+
+### 4) Arrêter l'environnement DB
+
+```bash
+docker compose down
+```
+
+Pour supprimer aussi les données locales (volume) :
+
+```bash
+docker compose down -v
 ```
 
 ## Workflow Git
@@ -82,6 +132,7 @@ Voir `BACKLOG.md`.
 - Règles métier et validations (TP 2.2) : `docs/DOMAIN_RULES.md`
 - API REST Task CRUD (TP 3.1) : `docs/API_TASKS.md`
 - Validation et gestion d’erreurs (TP 3.2) : `docs/API_ERRORS.md`
+- Persistance JPA / Hibernate (TP 4.1) : `docs/PERSISTENCE_JPA.md`
 
 ## API Tasks (TP 3.1)
 
@@ -303,10 +354,94 @@ curl -i -X POST http://localhost:8080/api/tasks \
 .
 ├─ build.gradle
 ├─ settings.gradle
-├─ gradlew
-├─ gradlew.bat
-├─ gradle/wrapper/
+├─ gradlew / gradlew.bat
+├─ docker-compose.yml / .env.example
 └─ src/
-   ├─ main/java/com/esieeit/projetsi/App.java
-   └─ test/java/com/esieeit/projetsi/AppTest.java
+   ├─ main/java/com/esieeit/projetsi/
+   │  ├─ api/
+   │  │  ├─ controller/     TaskController, RootController
+   │  │  ├─ dto/             TaskCreateRequest, TaskUpdateRequest, TaskResponse
+   │  │  ├─ error/           GlobalExceptionHandler, ErrorResponse
+   │  │  └─ mapper/          TaskMapper
+   │  ├─ application/
+   │  │  ├─ port/            TaskRepository (legacy port interface)
+   │  │  └─ service/         TaskService  ← JPA-backed
+   │  ├─ domain/
+   │  │  ├─ entity/          Task, Project, User, Comment  (JPA)
+   │  │  ├─ enumtype/        Role, ProjectStatus, TaskStatus, TaskPriority
+   │  │  ├─ exception/       ResourceNotFoundException, BusinessRuleException…
+   │  │  ├─ model/           Task, Project, User, Comment  (pure domain)
+   │  │  └─ validation/      Validators
+   │  └─ infrastructure/
+   │     ├─ repository/      TaskJpaRepository, ProjectJpaRepository, UserJpaRepository
+   │     │                   InMemoryTaskRepository  (désactivé)
+   │     └─ seed/            DataInitializer  (@Profile("dev"))
+   ├─ main/resources/
+   │  └─ application.yml
+   └─ test/java/com/esieeit/projetsi/
+      ├─ AppTest.java
+      └─ domain/model/  TaskWorkflowTest, UserValidationTest
+```
+
+---
+
+## TP 4.2 – Repositories et données de test (Spring Data JPA)
+
+### Repositories créés
+
+| Repository | Entité | Query methods principales |
+|---|---|---|
+| `TaskJpaRepository` | `Task` | `findByStatus`, `findByProjectId`, `findByProjectIdAndStatus`, `findByTitleContainingIgnoreCase`, `countByProjectId`, `existsByProjectIdAndTitleIgnoreCase` |
+| `ProjectJpaRepository` | `Project` | `findByNameContainingIgnoreCase`, `findByOwnerId`, `findByStatus`, `existsByName` |
+| `UserJpaRepository` | `User` | `findByEmail`, `findByUsername`, `existsByEmail`, `existsByUsername` |
+
+### Migration du service
+
+`TaskService` a été migré des mocks en mémoire (`InMemoryTaskRepository`) vers **les repositories JPA** (`TaskJpaRepository` + `ProjectJpaRepository`).
+
+La création d'une tâche nécessite désormais un `projectId` valide dans le corps de la requête.
+
+### Seed de données (CommandLineRunner)
+
+`DataInitializer` (`@Profile("dev")`) insère des données de démonstration au premier démarrage si les tables sont vides (idempotent).
+
+Jeu de données :
+- **4 utilisateurs** : admin, alice, bob, carol
+- **3 projets** : Gestion des tâches, Support interne, Refonte API
+- **12 tâches** avec statuts variés (TODO, IN_PROGRESS, DONE), priorités et dates
+
+### Tests manuels (2026-02-26)
+
+```text
+[OK] GET  /api/tasks          → 200 (12 tâches seedées)
+[OK] GET  /api/tasks/3        → 200 (tâche existante)
+[OK] POST /api/tasks          → 201 (créée en DB avec id=14)
+[OK] PUT  /api/tasks/14       → 200 (titre modifié, persisté)
+[OK] DELETE /api/tasks/14     → 204 (supprimée)
+[OK] GET  /api/tasks/14       → 404 (gérée correctement)
+[OK] GET  /api/tasks/9999     → 404 NOT_FOUND
+[OK] POST /api/tasks (title vide) → 400 VALIDATION_ERROR
+```
+
+### Exemples curl TP 4.2
+
+```bash
+# Lister toutes les tâches
+curl -X GET http://localhost:8080/api/tasks
+
+# Récupérer une tâche par ID
+curl -X GET http://localhost:8080/api/tasks/1
+
+# Créer une tâche (projectId obligatoire)
+curl -X POST http://localhost:8080/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"projectId": 1, "title": "Ma nouvelle tâche", "description": "Description"}'
+
+# Modifier une tâche
+curl -X PUT http://localhost:8080/api/tasks/5 \
+  -H "Content-Type: application/json" \
+  -d '{"status": "IN_PROGRESS"}'
+
+# Supprimer une tâche
+curl -X DELETE http://localhost:8080/api/tasks/5
 ```
